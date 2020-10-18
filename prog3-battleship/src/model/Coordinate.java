@@ -1,6 +1,8 @@
 package model;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Coordinate {
 	
@@ -52,6 +54,26 @@ public class Coordinate {
 		
 		return a0;
 	}
+	
+	public Coordinate copy() {
+		return new Coordinate(this);
+	}
+	
+	public Set<Coordinate> adjacentCoordinates(){
+		Set<Coordinate> adyacentes = new HashSet<Coordinate>();
+		
+		adyacentes.add(new Coordinate(components[0]- 1, components[1]-1));
+		adyacentes.add(new Coordinate(components[0], components[1]-1));
+		adyacentes.add(new Coordinate(components[0]+ 1, components[1]-1));
+		adyacentes.add(new Coordinate(components[0]- 1, components[1]+1));
+		adyacentes.add(new Coordinate(components[0], components[1]));
+		adyacentes.add(new Coordinate(components[0]- 1, components[1]));
+		adyacentes.add(new Coordinate(components[0]+ 1, components[1]+1));
+		adyacentes.add(new Coordinate(components[0], components[1]+1));
+		adyacentes.add(new Coordinate(components[0]+ 1, components[1]));
+		
+		return adyacentes;
+	}
 
 	@Override
 	public int hashCode() {
@@ -77,7 +99,17 @@ public class Coordinate {
 
 	@Override
 	public String toString() {
-		return "(" + components[0] + ", " + components[1] + ")";	//devuelve los valores del objeto
+		StringBuilder concat= new StringBuilder();
+		concat.append("(");
+		
+		for(int i=0; i< components.length; i++) {
+			concat.append(components[i]);
+			if(i < components.length -1)
+				concat.append(",");
+		}
+		concat.append(")");
+		
+		return concat.toString();	//devuelve los valores del objeto
 	}
 	
 	
