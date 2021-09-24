@@ -1,118 +1,120 @@
+//@author Alicia Baquero Tafalla
 package model;
 
-import java.util.Arrays;
+import java.util.Objects; 
+/*
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+*/
 
+/**
+ * The Class Coordinate.
+ */
 public class Coordinate {
 	
-	private int [] components;  	//vector de enteros
+	/** The x. */
+	private int x;
 	
-	public Coordinate(int a, int b) {
-		components= new int[2];		//se reserva el espacio para los componentes
-		components[0]=a;
-		components[1]=b;
-	}
+	/** The y. */
+	private int y;
 	
-	public Coordinate(Coordinate x) {
-		components= new int[x.components.length];		//se reserva el espacio para los componentes
-		for(int i=0; i<x.components.length; i++)
-			components[i]= x.components[i];
+	
+	/**
+	 * Instantiates a new coordinate.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 */
+	public Coordinate(int x, int y) {
+		this.x=x;
+		this.y=y;
 	}
 
-	public int get(int a) {
-		if(a>=0 && a<components.length)		//el valor debe ser mayor que 0 y menor que la longitud del vector
-			return components[a];		//se devuelve el valor en dicha posición
-		
-		else		//si no cumple estos requisitos llama a error
-			System.err.println("Error in Coordinate.get, component" + a + "is out of range");
-		
-		return -1;
+	/**
+	 * Instantiates a new coordinate.
+	 *
+	 * @param c the c
+	 */
+	public Coordinate(Coordinate c) {
+		this.x=c.x;
+		this.y=c.y;
 	}
 	
-	public Coordinate add (Coordinate x) {
-		Coordinate a0= new Coordinate(this);		//crea un nuevo objeto a0
-		
-		for(int i=0; i<x.components.length; i++) {
-			a0.set(i, a0.get(i)+ x.get(i));			//le introduce los valores resultantes de la suma a a0
-		}
-		return a0;
+	/**
+	 * Gets the x.
+	 *
+	 * @return the x
+	 */
+	public int getX(){
+		return x;
 	}
 	
-	public void set(int c, int x) {		//de un objeto creado modifica el valor
-		if(c>=0 && c<components.length)
-				components[c]=x;
-		else
-			System.err.println("Error in Coordinate.set, component" + c + "is out of range");
+	/**
+	 * Gets the y.
+	 *
+	 * @return the y
+	 */
+	public int getY(){
+		return y;
 	}
 	
-	public Coordinate subtract(Coordinate x) {
-		Coordinate a0= new Coordinate(this);
-		
-		for(int i=0; i<x.components.length; i++)
-			a0.set(i, a0.get(i)- x.get(i));		//devuelve los valores tras realizar la resta
-		
-		return a0;
-	}
-	
-	public Coordinate copy() {
-		return new Coordinate(this);
-	}
-	
-	public Set<Coordinate> adjacentCoordinates(){
-		Set<Coordinate> adyacentes = new HashSet<Coordinate>();
-		
-		adyacentes.add(new Coordinate(components[0]- 1, components[1]-1));
-		adyacentes.add(new Coordinate(components[0], components[1]-1));
-		adyacentes.add(new Coordinate(components[0]+ 1, components[1]-1));
-		adyacentes.add(new Coordinate(components[0]- 1, components[1]+1));
-		adyacentes.add(new Coordinate(components[0], components[1]));
-		adyacentes.add(new Coordinate(components[0]- 1, components[1]));
-		adyacentes.add(new Coordinate(components[0]+ 1, components[1]+1));
-		adyacentes.add(new Coordinate(components[0], components[1]+1));
-		adyacentes.add(new Coordinate(components[0]+ 1, components[1]));
-		
-		return adyacentes;
+	/**
+	 * Adds the.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @return the coordinate
+	 */
+	public Coordinate add(int x, int y) {
+		Coordinate nueva=new Coordinate(this.x + x, this.y +y);
+		return nueva;
 	}
 
-	@Override
+	/**
+	 * Adds the.
+	 *
+	 * @param c the c
+	 * @return the coordinate
+	 */
+	public Coordinate add(Coordinate c) {
+		Coordinate nueva=new Coordinate(this.x + c.x, this.y + c.y);
+		return nueva;
+	}
+	 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(components);
-		return result;
-	}
+		return Objects.hash(x,y);
+	}	
 
-	@Override
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if(this==obj)
 			return true;
-		if (obj == null)
+		if(obj==null)
 			return false;
-		if (getClass() != obj.getClass())
+		if(getClass() != obj.getClass())
 			return false;
 		Coordinate other = (Coordinate) obj;
-		if (!Arrays.equals(components, other.components))
-			return false;
-		return true;
+		return x==other.x && y==other.y;
 	}
-
-	@Override
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
-		StringBuilder concat= new StringBuilder();
-		concat.append("(");
-		
-		for(int i=0; i< components.length; i++) {
-			concat.append(components[i]);
-			if(i < components.length -1)
-				concat.append(",");
-		}
-		concat.append(")");
-		
-		return concat.toString();	//devuelve los valores del objeto
+		return "[" + x + "," + y + "]";
 	}
 	
-	
-	
-
 }
