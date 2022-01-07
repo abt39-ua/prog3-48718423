@@ -25,7 +25,7 @@ public class Board {
 	private int size;
 	
 	/** The board. */
-	private Map<Coordinate,Fighter> board;
+	protected Map<Coordinate,Fighter> board;
 	
 	/**
 	 * Instantiates a new board.
@@ -156,7 +156,7 @@ public class Board {
 		Fighter enemy;
 		int n=0;
 		
-		if(board.containsValue(f)) {
+		if(f.getPosition()!=null) {
 			throw new FighterAlreadyInBoardException(f);
 		}
 		
@@ -210,13 +210,10 @@ public class Board {
 		Set<Coordinate> neigbors=null;
 		int n;
 		
-		if(position==null || board.get(position)==null || !board.get(position).equals(f)) {
+		if(position==null) {
 			throw new FighterNotInBoardException(f);
 		}
-		if(position!=null) {
-			Fighter fposition= board.get(position);
-			
-			if(f==fposition) {
+		else {			
 				try {
 					neigbors=getNeighborhood(position);
 				}catch(OutOfBoundsException e) {
@@ -242,14 +239,14 @@ public class Board {
 							break;
 						}
 						
-						else {
+						if(n==1){
 							f.getMotherShip().updateResults(1);
 							fighter.getMotherShip().updateResults(-1);
 							fighter.setPosition(null);
 							board.remove(cor);
 						}
 					}
-				}
+				
 			}
 		}
 	}

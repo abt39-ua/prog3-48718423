@@ -324,4 +324,8 @@ public abstract class Fighter {
      * @return the symbol
      */
     public abstract char getSymbol();
+    
+    public int getValue() {
+    	return attack+velocity;
+    }
 }

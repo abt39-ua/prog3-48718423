@@ -3,6 +3,7 @@ package model;
 
 import model.exceptions.NoFighterAvailableException;
 
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Ship {
 	private Side side;
 	
 	/** The fleet. */
-	private ArrayList<Fighter> fleet;
+	protected ArrayList<Fighter> fleet;
 	
 	/**
 	 * Instantiates a new ship.
@@ -34,19 +35,10 @@ public class Ship {
 	 * @param side the side
 	 */
 	
-	public Ship(Ship cop) {
-		wins=cop.wins;
-		losses=cop.losses;
-		this.side=cop.side;
-		this.name=cop.name;
-		fleet=new ArrayList<Fighter>();
-		
-		for(Fighter f: cop.fleet) {
-			fleet.add(f.copy());
-		}
-	}
 	
 	public Ship(String name, Side side) {
+		Objects.requireNonNull(name);
+		Objects.requireNonNull(side);
 		wins=0;
 		losses=0;
 		this.side=side;
@@ -106,6 +98,7 @@ public class Ship {
 	 * @param fd the fd
 	 */
 	public void addFighters(String fd) {
+		Objects.requireNonNull(fd);
 		String [] trozos=fd.split(":");
 		
 		for(String trozo : trozos) {
@@ -114,7 +107,9 @@ public class Ship {
 			
 			for(int i = 1; i <= cuantos; i++) {
 				Fighter f = FighterFactory.createFighter(trozos2[1], this);
-				fleet.add(f);
+				if(f!=null) {
+					fleet.add(f);
+				}
 			}
 			
 		}
@@ -144,11 +139,13 @@ public class Ship {
 	 * @throws NoFighterAvailableException the no fighter available exception
 	 */
 	public Fighter getFirstAvailableFighter(String t) throws NoFighterAvailableException{
+		Objects.requireNonNull(t);
 		Fighter first=null;
 		
 		for(int i=0; i<fleet.size() && first==null; i++) {
-			if(!fleet.get(i).isDestroyed() && (t.equals(fleet.get(i).getType()) || t.isEmpty())) {
+			if(!fleet.get(i).isDestroyed() && (t.equals(fleet.get(i).getType()) || t.isEmpty()) && fleet.get(i).getPosition()==null) {
 					first=fleet.get(i);
+					i--;
 			}
 		}
 		
@@ -179,7 +176,7 @@ public class Ship {
 		StringBuilder sb= new StringBuilder();
 		
 		for(Fighter f : fleet) {
-			sb.append(f.toString());
+			sb.append(f);
 			
 			if(f.isDestroyed())
 				sb.append(" (X)");

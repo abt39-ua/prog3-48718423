@@ -1,3 +1,4 @@
+//@author Alicia Baquero Tafalla
 package model.fighters;
 
 import model.Fighter;
